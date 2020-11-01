@@ -1,7 +1,6 @@
 import {
   VDOMGenerator,
   Structure,
-  // BasicStructure,
   PropertyObject,
   Styles,
   ComponentStructure,
@@ -43,7 +42,6 @@ class TreeBranch {
   protected isDestroyed: boolean = false;
   protected lastStructure: Structure = { type: "div" };
   protected externalStruct: Structure;
-  // vdomgenerator: VDOMGenerator | null = null;
   protected childs: TreeBranch[] = [];
   protected singleDescendant: TreeBranch | null = null;
   protected eventHandler: EventHandler | null = null;
@@ -160,10 +158,7 @@ class TreeBranch {
     if (oldStruct.type !== newStruct.type) return -1;
     else {
       let c = 0;
-      if (
-        // JSON.stringify({ ...struct, childs: [] }) !== JSON.stringify({ ...this.lastStructure, childs: [] })
-        !isEqual({ ...newStruct, childs: [] }, { ...oldStruct, childs: [] })
-      ) {
+      if (!isEqual({ ...newStruct, childs: [] }, { ...oldStruct, childs: [] })) {
         c += 1;
       }
 
@@ -231,8 +226,6 @@ class TreeBranch {
         structure.hasOwnProperty("nodeProperties") ? (<BasicStructure>structure).nodeProperties! : {},
         oldStruct.hasOwnProperty("nodeProperties") ? (<BasicStructure>oldStruct).nodeProperties! : {}
       );
-    } else {
-      // this.updateSelfProps(structure.props ? structure.props : {});
     }
   }
 
@@ -349,7 +342,6 @@ class TreeBranch {
 
   mountTo(target: HTMLElement) {
     DI.append(target, this.getVDOM());
-    // target.append(this.getVDOM());
     this.onMount();
   }
 
