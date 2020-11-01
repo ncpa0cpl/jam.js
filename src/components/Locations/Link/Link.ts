@@ -5,7 +5,7 @@ import { LinkProps } from "./Link.types.js";
 
 export default class Link extends VDC {
   clickHandler() {
-    const props = <LinkProps>this.props();
+    const props = <LinkProps>this.getProps();
     const linkTo = props.to;
     window.history.pushState({}, "", linkTo);
 

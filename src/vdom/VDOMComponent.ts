@@ -32,7 +32,7 @@ class VDOMComponent implements Component {
     this.updateCallback();
   }
 
-  props(): PropertyObject {
+  getProps(): PropertyObject {
     return objectCopy(this.properties);
   }
 
