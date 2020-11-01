@@ -32,20 +32,6 @@ class VDOMComponent implements Component {
     this.updateCallback();
   }
 
-  // getState<T, K extends keyof T>(stateName: K): T[K] {
-  //   const state = <T>this.state;
-
-  //   if (state[stateName] !== undefined) {
-  //     if (Array.isArray(state[stateName]))
-  //       return <T[K]>(<unknown>arrayCopy(<any>state[stateName]));
-  //     if (typeof state[stateName] === "object")
-  //       return <T[K]>(<unknown>objectCopy(<any>state[stateName]));
-  //     else return <T[K]>state[stateName];
-  //   }
-
-  //   throw Error("state property of name '" + stateName + "' doesn't exist!");
-  // }
-
   props(): PropertyObject {
     return objectCopy(this.properties);
   }

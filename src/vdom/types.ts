@@ -33,20 +33,6 @@ interface ComponentStructure {
 
 type Structure = ComponentStructure | BasicStructure;
 
-// interface Structure {
-// 	type: string | VDOMGenerator;
-// 	content?: string;
-// 	htmlAttributes?: { [index: string]: string };
-// 	style?: Styles;
-// 	childs?: Structure[];
-// 	props?: PropertyObject;
-// 	events?: { [index: string]: Function };
-// }
-
-// interface BasicStructure extends Structure {
-// 	type: string;
-// }
-
 interface Component {
   render(props: PropertyObject): Structure;
 }
