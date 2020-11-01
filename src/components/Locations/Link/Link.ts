@@ -3,14 +3,18 @@ import { Structure } from "../../../vdom/types.js";
 import { CONTEXT_PATH_NAME } from "../constants.js";
 import { LinkProps } from "./Link.types.js";
 
-export default class Link extends VDC {
-  clickHandler() {
-    const props = <LinkProps>this.props();
-    const linkTo = props.to;
-    window.history.pushState({}, "", linkTo);
+function open(path: string) {
+  const linkTo = path[0] === "/" ? path : `${window.location.pathname}/${path}/`;
+  window.history.pushState({}, "", linkTo);
 
-    const pathRef = this.getContext(CONTEXT_PATH_NAME);
-    pathRef.current = linkTo;
+  const pathRef = this.getContext(CONTEXT_PATH_NAME);
+  pathRef.current = linkTo;
+}
+
+class Link extends VDC {
+  clickHandler() {
+    const props = <LinkProps>this.getProps();
+    open(props.to);
   }
 
   render(props: LinkProps): Structure {
@@ -29,3 +33,5 @@ export default class Link extends VDC {
     };
   }
 }
+
+export { open, Link };
