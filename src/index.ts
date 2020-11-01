@@ -7,7 +7,6 @@ import {
   BasicStructure,
   ComponentStructure,
 } from "./vdom/types.js";
-
 export {
   DI,
   VDC,
