@@ -1,9 +1,6 @@
-import { objectCopy } from "../../../general/objectCopy.js";
-import { trackedRef } from "../../../general/trackedRef.js";
 import { VDOMComponent as VDC } from "../../../vdom/index.js";
 import { Structure } from "../../../vdom/types.js";
 import { CONTEXT_PARENT_PATH, CONTEXT_PATH_NAME } from "../constants.js";
-import { Onpopstate } from "../Onpopstate/Onpopstate.js";
 import { RouterProps } from "./Router.types.js";
 import { TrackedReference } from "../../../general/trackedRef.js";
 
@@ -45,13 +42,26 @@ export default class Router extends VDC {
 
     const match = props.routes.find(r => location[location.length - 1] === r.path);
 
+    const currentParentPath = this.getContext(CONTEXT_PARENT_PATH);
+
     if (match !== undefined) {
-      const currentParentPath = this.getContext(CONTEXT_PARENT_PATH);
       this.setContext(CONTEXT_PARENT_PATH, `${currentParentPath}${match.path}/`);
-      return match.page;
+      return {
+        type: "div",
+        htmlAttributes: {
+          class: "jam_router",
+        },
+        childs: [match.page],
+      };
     }
     if (defaultRoute !== undefined) {
-      return defaultRoute.page;
+      const newpath = `${currentParentPath}${defaultRoute.path}/`;
+      this.setContext(CONTEXT_PARENT_PATH, newpath);
+      window.history.pushState({}, "", newpath);
+      return {
+        type: "div",
+        childs: [defaultRoute.page],
+      };
     }
     return props.errorPage || ERROR_PAGE;
   }

@@ -6,7 +6,7 @@ import { LinkProps } from "./Link.types.js";
 export default class Link extends VDC {
   clickHandler() {
     const props = <LinkProps>this.getProps();
-    const linkTo = props.to;
+    const linkTo = props.to[0] === "/" ? props.to : `${window.location.pathname}/${props.to}/`;
     window.history.pushState({}, "", linkTo);
 
     const pathRef = this.getContext(CONTEXT_PATH_NAME);
