@@ -1,5 +1,4 @@
 import {
-  VDOMGenerator,
   Structure,
   PropertyObject,
   Styles,
@@ -58,6 +57,10 @@ class TreeBranch {
     this.initiate(struct);
   }
 
+  extractParentContextVariable(name: string) {
+    return this.parentContextExtractor(name);
+  }
+
   extractContextVariable(name: string) {
     if (this.context.hasOwnProperty(name)) return this.context[name];
     return this.parentContextExtractor(name);
@@ -103,7 +106,10 @@ class TreeBranch {
       const props: { [index: string]: any } = struct.hasOwnProperty("props")
         ? objectCopy((<ComponentStructure>struct).props!)
         : {};
-      props["__context__methods__"] = [this.extractContextVariable.bind(this), this.setContextVariable.bind(this)];
+      props["__context__methods__"] = [
+        this.extractParentContextVariable.bind(this),
+        this.setContextVariable.bind(this),
+      ];
 
       this.propsRef = props;
       const newComponent = new struct.type(props);
@@ -144,7 +150,9 @@ class TreeBranch {
       if (isEqual(newStruct, this.lastStructure)) return 0;
 
       this.checkForInternalChanges(newStruct);
+      return 1;
     }
+    return 0;
   }
 
   // checkForChanges:
@@ -201,6 +209,7 @@ class TreeBranch {
 
     if (typeof s1.type === "string")
       this.updateSelfEvents(s1.hasOwnProperty("events") ? (<BasicStructure>s1).events! : {});
+    return 1;
   }
 
   updateSelf(structure: Structure) {

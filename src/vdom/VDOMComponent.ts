@@ -1,8 +1,7 @@
 import { PropertyObject, Structure, Component, State, contextExtractorFn, contextSetterFn } from "./types.js";
 import { TreeBranch } from "./tree.js";
 import isEqual from "../general/isEqual.js";
-import { arrayCopy, objectCopy } from "../general/objectCopy.js";
-import { KeyObject } from "../types/types.js";
+import { objectCopy } from "../general/objectCopy.js";
 
 class VDOMComponent implements Component {
   protected properties: PropertyObject = {};
@@ -52,7 +51,6 @@ class VDOMComponent implements Component {
 
   static initiate(structure: Structure) {
     let tree = new TreeBranch(structure, () => undefined);
-    console.log(tree);
 
     return tree;
   }

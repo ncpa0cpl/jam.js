@@ -34,15 +34,17 @@ export default class Router extends VDC {
   }
 
   render(props: RouterProps): Structure {
-    const currentLocation = this.retrieveLocation();
+    const currentLocation: string = window.location.pathname;
+    const currentParentPath: string = this.getContext(CONTEXT_PARENT_PATH);
 
-    const location = <[]>currentLocation!.current.split("/").filter((p: string) => p.length > 0);
+    const location = currentLocation
+      .slice(currentParentPath.length)
+      .split("/")
+      .filter((p: string) => p.length > 0);
 
     const defaultRoute = props.routes.find(r => r.default !== undefined && r.default);
 
-    const match = props.routes.find(r => location[location.length - 1] === r.path);
-
-    const currentParentPath = this.getContext(CONTEXT_PARENT_PATH);
+    const match = props.routes.find(r => location[0] === r.path);
 
     if (match !== undefined) {
       this.setContext(CONTEXT_PARENT_PATH, `${currentParentPath}${match.path}/`);
@@ -53,13 +55,15 @@ export default class Router extends VDC {
         },
         childs: [match.page],
       };
-    }
-    if (defaultRoute !== undefined) {
+    } else if (defaultRoute !== undefined) {
       const newpath = `${currentParentPath}${defaultRoute.path}/`;
       this.setContext(CONTEXT_PARENT_PATH, newpath);
-      window.history.pushState({}, "", newpath);
+      window.history.replaceState({}, "", newpath);
       return {
         type: "div",
+        htmlAttributes: {
+          class: "jam_router",
+        },
         childs: [defaultRoute.page],
       };
     }
