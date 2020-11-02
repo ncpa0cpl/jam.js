@@ -1,6 +1,6 @@
 import { trackedRef } from "../../../general/trackedRef.js";
 import { VDOMComponent as VDC } from "../../../vdom/index.js";
-import { PropertyObject, Structure } from "../../../vdom/types.js";
+import { Structure } from "../../../vdom/types.js";
 import { CONTEXT_PARENT_PATH, CONTEXT_PATH_NAME } from "../constants.js";
 import { Onpopstate } from "../Onpopstate/Onpopstate.js";
 import { RouterContextProps } from "./RouterContext.types.js";
