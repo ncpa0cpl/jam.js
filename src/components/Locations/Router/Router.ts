@@ -3,6 +3,7 @@ import { Structure } from "../../../vdom/types.js";
 import { CONTEXT_PARENT_PATH, CONTEXT_PATH_NAME } from "../constants.js";
 import { RouterProps } from "./Router.types.js";
 import { TrackedReference } from "../../../general/trackedRef.js";
+import { Path } from "../Path/path.js";
 
 const ERROR_PAGE = {
   type: "div",
@@ -47,7 +48,7 @@ export default class Router extends VDC {
     const match = props.routes.find(r => location[0] === r.path);
 
     if (match !== undefined) {
-      this.setContext(CONTEXT_PARENT_PATH, `${currentParentPath}${match.path}/`);
+      this.setContext(CONTEXT_PARENT_PATH, Path.join(currentParentPath, match.path));
       return {
         type: "div",
         htmlAttributes: {
@@ -56,7 +57,9 @@ export default class Router extends VDC {
         childs: [match.page],
       };
     } else if (defaultRoute !== undefined) {
-      const newpath = `${currentParentPath}${defaultRoute.path}/`;
+      const newpath = Path.join(currentParentPath, defaultRoute.path);
+      console.log("new path: ", newpath);
+
       this.setContext(CONTEXT_PARENT_PATH, newpath);
       window.history.replaceState({}, "", newpath);
       return {
