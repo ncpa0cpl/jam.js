@@ -58,8 +58,6 @@ export default class Router extends VDC {
       };
     } else if (defaultRoute !== undefined) {
       const newpath = Path.join(currentParentPath, defaultRoute.path);
-      console.log("new path: ", newpath);
-
       this.setContext(CONTEXT_PARENT_PATH, newpath);
       window.history.replaceState({}, "", newpath);
       return {
