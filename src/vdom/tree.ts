@@ -200,6 +200,9 @@ class TreeBranch {
         break;
       case 2:
         this.updateChilds(s1.hasOwnProperty("childs") ? (<BasicChildStructure>s1).childs! : []);
+        if (s1.hasOwnProperty("nodeProperties")) {
+          this.updateSelfNodeProperties((s1 as any).nodeProperties);
+        }
         break;
       case 3:
         this.updateSelf(s1);
@@ -230,17 +233,15 @@ class TreeBranch {
         structure.hasOwnProperty("style") ? (<BasicStructure>structure).style! : {},
         oldStruct.hasOwnProperty("style") ? (<BasicStructure>oldStruct).style! : {}
       );
-
-      this.updateSelfNodeProperties(
-        structure.hasOwnProperty("nodeProperties") ? (<BasicStructure>structure).nodeProperties! : {},
-        oldStruct.hasOwnProperty("nodeProperties") ? (<BasicStructure>oldStruct).nodeProperties! : {}
-      );
+      if (structure.hasOwnProperty("nodeProperties")) {
+        this.updateSelfNodeProperties((structure as any).nodeProperties);
+      }
     }
   }
 
-  updateSelfNodeProperties(newProps: { [index: string]: any }, oldProps: { [index: string]: any }) {
+  updateSelfNodeProperties(newProps: { [index: string]: any }) {
     for (const p in newProps) {
-      if (newProps[p] !== oldProps[p]) this.vdom?.setNodeProperty(p, newProps[p]);
+      this.vdom?.setNodeProperty(p, newProps[p]);
     }
   }
 
