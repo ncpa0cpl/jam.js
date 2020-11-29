@@ -4,7 +4,7 @@ interface PropertyObject {
   [index: string]: any;
 }
 
-type VDOMGenerator = new (props: any) => VDOMComponent;
+type VDOMGenerator = new (props: any) => Object;
 
 type Styles = { [index: string]: string | number };
 
@@ -14,6 +14,7 @@ interface BasicStructureBase {
   style?: Styles;
   events?: { [index: string]: Function };
   nodeProperties?: { [index: string]: string };
+  key?: string;
 }
 
 interface BasicContentStructure extends BasicStructureBase {
@@ -21,21 +22,24 @@ interface BasicContentStructure extends BasicStructureBase {
 }
 
 interface BasicChildStructure extends BasicStructureBase {
-  childs?: Structure[];
+  childs?: Array<Structure | string>;
 }
 
 type BasicStructure = BasicChildStructure | BasicContentStructure;
 
 interface ComponentStructure {
   type: string | VDOMGenerator;
+  key?: string;
   props?: PropertyObject;
+  [key: string]: any;
 }
 
 type Structure = ComponentStructure | BasicStructure;
 
-interface Component {
-  render(props: PropertyObject): Structure;
-}
+// interface Component {
+//   render(props: T): Structure;
+//   getProps(): T;
+// } 
 
 interface State {
   [index: string]: any;
@@ -53,7 +57,7 @@ export {
   BasicContentStructure,
   BasicChildStructure,
   Styles,
-  Component,
+  // Component,
   State,
   contextExtractorFn,
   contextSetterFn,
